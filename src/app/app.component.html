@@ -1,0 +1,98 @@
+<div class="app-shell">
+  <header class="top-bar">
+    <div>
+      <p class="eyebrow">Visão geral</p>
+      <h1>Track My Cash</h1>
+      <p class="subtitle">Orçamento mensal em tempo real para decisões rápidas.</p>
+    </div>
+    <button class="primary-btn">+ Novo lançamento</button>
+  </header>
+
+  <section class="hero">
+    <div class="hero-card">
+      <p class="hero-label">Mês ativo</p>
+      <h2>{{ monthLabel }}</h2>
+      <p class="hero-meta">Orçamento total: {{ monthlyBudget }}</p>
+      <div class="hero-total">
+        <div>
+          <p class="hero-label">Saldo disponível</p>
+          <h3>{{ totalRemaining }}</h3>
+        </div>
+        <span class="pill">Saldo atualizado</span>
+      </div>
+      <div class="hero-stats">
+        <div>
+          <p class="stat-label">Ritmo de gasto</p>
+          <p class="stat-value">{{ dailyPace }}</p>
+        </div>
+        <div>
+          <p class="stat-label">Projeção até o fim do mês</p>
+          <p class="stat-value">{{ projectedEnd }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="hero-side">
+      <div class="side-card" *ngFor="let highlight of highlights">
+        <h4>{{ highlight.title }}</h4>
+        <p>{{ highlight.description }}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="grid">
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <h3>Categorias críticas</h3>
+          <p class="subtitle">Saldo e status em tempo real</p>
+        </div>
+        <button class="ghost-btn">Ver todas</button>
+      </div>
+      <div class="category-list">
+        <div class="category-item" *ngFor="let category of categories">
+          <div class="category-title">
+            <div>
+              <h4>{{ category.name }}</h4>
+              <p class="meta">Limite: {{ category.limit }}</p>
+            </div>
+            <span class="status" [class.warning]="category.status === 'Atenção'" [class.danger]="category.status === 'Estourada'">
+              {{ category.status }}
+            </span>
+          </div>
+          <div class="category-values">
+            <span>Gasto: {{ category.spent }}</span>
+            <span>Restante: {{ category.remaining }}</span>
+          </div>
+          <div class="progress">
+            <div class="progress-bar" [style.width.%]="category.progress"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card actions">
+      <div class="card-header">
+        <div>
+          <h3>Ações rápidas</h3>
+          <p class="subtitle">Foque no impacto do gasto</p>
+        </div>
+      </div>
+      <div class="action-list">
+        <button class="action-item" *ngFor="let action of quickActions">
+          <div>
+            <h4>{{ action.title }}</h4>
+            <p>{{ action.subtitle }}</p>
+          </div>
+          <span class="chevron">→</span>
+        </button>
+      </div>
+      <div class="card-footer">
+        <h4>Recorrências & parcelas</h4>
+        <p>
+          Lançamentos podem ser retroativos, recorrentes (semanal, quinzenal, mensal, anual) e
+          parcelados sem travar o orçamento do mês.
+        </p>
+      </div>
+    </div>
+  </section>
+</div>
