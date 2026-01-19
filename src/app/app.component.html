@@ -4,12 +4,13 @@
       <h1>Track My Cash</h1>
     </div>
     <div class="header-actions">
-      <button class="primary-btn">+ Novo lançamento</button>
+      <button class="primary-btn" type="button" (click)="scrollToForm()">+ Novo lançamento</button>
       <div class="action-menu">
-        <span class="menu-label">Ações</span>
+        <span class="menu-label">Menu</span>
         <div class="menu-actions">
-          <button class="ghost-btn">Novo lançamento</button>
-          <button class="ghost-btn">Lançamento parcelado</button>
+          <button class="ghost-btn" type="button">Lançamento parcelado</button>
+          <button class="ghost-btn" type="button">Gerenciar categorias</button>
+          <button class="ghost-btn" type="button">Configurar orçamento mensal</button>
         </div>
       </div>
     </div>
@@ -40,17 +41,51 @@
     </div>
   </section>
 
+  <section class="card form-card" id="entry-form">
+    <div class="card-header">
+      <h3>Novo lançamento</h3>
+      <p class="meta">Registre agora para atualizar o orçamento em tempo real.</p>
+    </div>
+    <form class="entry-form" (ngSubmit)="addTransaction()">
+      <label class="field">
+        Valor
+        <input type="number" min="0" step="0.01" [(ngModel)]="newEntry.amount" name="amount" required />
+      </label>
+      <label class="field">
+        Data da compra
+        <input type="date" [(ngModel)]="newEntry.date" name="date" required />
+      </label>
+      <label class="field">
+        Categoria
+        <select [(ngModel)]="newEntry.categoryId" name="categoryId" required>
+          <option *ngFor="let category of budgetConfig.categories" [value]="category.id">
+            {{ category.name }}
+          </option>
+        </select>
+      </label>
+      <label class="field">
+        Meio de pagamento
+        <select [(ngModel)]="newEntry.paymentMethod" name="paymentMethod" required>
+          <option *ngFor="let method of paymentMethods" [value]="method">
+            {{ method }}
+          </option>
+        </select>
+      </label>
+      <button class="primary-btn" type="submit">Salvar lançamento</button>
+    </form>
+  </section>
+
   <section class="card">
     <div class="card-header">
       <h3>Categorias críticas</h3>
-      <button class="ghost-btn">Ver todas</button>
+      <button class="ghost-btn" type="button">Ver todas</button>
     </div>
     <div class="category-list">
       <div class="category-item" *ngFor="let category of categories">
         <div class="category-title">
           <div>
             <h4>{{ category.name }}</h4>
-            <p class="meta">Limite: {{ category.limit }}</p>
+            <p class="meta">Limite: {{ category.limitLabel }}</p>
           </div>
           <span
             class="status"
@@ -61,8 +96,8 @@
           </span>
         </div>
         <div class="category-values">
-          <span>Gasto: {{ category.spent }}</span>
-          <span>Restante: {{ category.remaining }}</span>
+          <span>Gasto: {{ category.spentLabel }}</span>
+          <span>Restante: {{ category.remainingLabel }}</span>
         </div>
         <div class="progress">
           <div class="progress-bar" [style.width.%]="category.progress"></div>
